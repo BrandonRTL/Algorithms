@@ -1,24 +1,23 @@
 #include "Sort.h"
-void MyQuick_Sort(std::vector<double>& _A, int first, int last)
+#include <iostream>
+void MyCounting_Sort(std::vector<int>& _A, int _Max)
 {
-	double Mid;
-	double 	Tmp;
-	int f = first;
-	int l = last;
-	Mid = _A[(f + l) / 2];
-	do
+	std::vector<int> C(_Max + 1);
+	std::vector<int> B(_A.size());
+	int min = 0;
+	for (int i = 0; i < _A.size(); i++)
+		C[_A[i]] = C[_A[i]] + 1;
+	//	for (int i = 0; i < C.size(); i++) std::cout << C[i] << " ";
+	//	std::cout << std::endl;
+	for (int i = 1; i < C.size(); i++)
+		C[i] += C[i - 1];
+	//	for (int i = 0; i < C.size(); i++) std::cout << C[i] << " ";
+	for (int i = _A.size() - 1; i >= 0; i--)
 	{
-		while (_A[f]<Mid) f++;
-		while (_A[l]>Mid) l--;
-		if (f <= l) 
-		{
-			Tmp = _A[f];
-			_A[f] = _A[l];
-			_A[l] = Tmp;
-			f++;
-			l--;
-		}
-	} while (f<l);
-	if (first<l) MyQuick_Sort(_A, first, l);
-	if (f<last) MyQuick_Sort(_A, f, last);
+		B[C[_A[i]] - 1] = _A[i];
+		C[_A[i]]--;
+	}
+	_A = B;
+	//	std::cout << std::endl;
+	//for (int i = 0; i < B.size(); i++) std::cout << B[i] << " ";
 }
